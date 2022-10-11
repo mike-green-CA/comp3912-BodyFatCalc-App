@@ -2,7 +2,7 @@
 //  MainViewController.swift
 //  Body Fat Calculator
 //
-//  Created by Michael Green on 2022-05-28.
+//  Created by Michael Green on 2022-07-15.
 //
 
 import UIKit
@@ -18,6 +18,8 @@ class MainViewController: UIViewController, UITextFieldDelegate {
     
     @IBOutlet var heightPicker: UIPickerView!
     @IBOutlet weak var weightInput: UITextField!
+    @IBOutlet weak var ageInput: UITextField!
+    
     
     @IBOutlet weak var neckSlider: UISlider!
     @IBOutlet weak var waistSlider: UISlider!
@@ -57,6 +59,13 @@ class MainViewController: UIViewController, UITextFieldDelegate {
         self.weightInput.delegate = self
         weightInput.attributedPlaceholder = NSAttributedString(
             string: "Weight (lbs)",
+            attributes: [NSAttributedString.Key.foregroundColor: UIColor.white]
+        )
+        
+        // This will make weight input placeholder text white.
+        self.ageInput.delegate = self
+        ageInput.attributedPlaceholder = NSAttributedString(
+            string: "Age",
             attributes: [NSAttributedString.Key.foregroundColor: UIColor.white]
         )
         
@@ -103,25 +112,32 @@ class MainViewController: UIViewController, UITextFieldDelegate {
         }
         
         // Lean mass, fat mass, bmi ...
-        bmi = Double((Float(weight) ?? 0.00) / (Float(heightInInches) * Float(heightInInches)) * Float(703.0))
+        bmi = Double(((Float(weight) ?? 0.00) * 703) / (Float(heightInInches) * Float(heightInInches)))
         fatMass = Double((Float(weight) ?? 0.00) * Float(bfp / 100))
         leanMass = Double((Float(weight) ?? 0.00)) - fatMass
         
-        
-        print("waistMinusNeck = \(CGFloat(waistSlider.value)) - \(CGFloat(neckSlider.value)) \n heightInInches = \(CGFloat(heightInInches)) \n Sex = \(lastSexChosen) \n weight = \(weight) \n LM = \(leanMass) \n FM = \(fatMass) \n BMI = \(bmi)")
-        print(bfp)
-        
+        //print("waistMinusNeck = \(CGFloat(waistSlider.value)) - \(CGFloat(neckSlider.value)) \n heightInInches = \(CGFloat(heightInInches)) \n Sex = \(lastSexChosen) \n weight = \(weight) \n LM = \(leanMass) \n FM = \(fatMass) \n BMI = \(bmi) \n BFP = \(bfp)")
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?)
     {
-        print("TESTING SEG PREPARE \n FatMass = \(fatMass)")
+        let age : String = ageInput.text ?? "0"
+        let weight : String = weightInput.text ?? "0.00"
+        
         if segue.destination is ResultsViewController {
             let vc = segue.destination as? ResultsViewController
             vc?.fatMass = Float(fatMass)
             vc?.leanMass = Float(leanMass)
             vc?.bmi = Float(bmi)
             vc?.bfp = Float(bfp)
+            vc?.age = Int(age) ?? 0
+            vc?.weight = Int(weight) ?? 0 
+             
+            if(maleSwitch.isOn == true){
+                vc?.sex = "male"
+            }else{
+                vc?.sex = "female"
+            }
         }
     }
     

@@ -2,7 +2,7 @@
 //  ResultsViewController.swift
 //  Body Fat Calculator
 //
-//  Created by Michael Green on 2022-06-13.
+//  Created by Michael Green on 2022-07-15.
 //
 
 import UIKit
@@ -10,11 +10,13 @@ import SwiftUI
 
 class ResultsViewController: UIViewController {
     
-    
     var fatMass: Float = 0.00
     var leanMass: Float = 0.00
     var bmi: Float = 0.00
     var bfp: Float = 0.00
+    var age: Int = 0
+    var sex: String = ""
+    var weight: Int = 0
 
     @IBOutlet weak var mainView: UIImageView!
     
@@ -66,6 +68,22 @@ class ResultsViewController: UIViewController {
             view.backgroundColor = UIColor.red;
         }
         
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?)
+    {
+        print("START ResultsVC Transfer")
+        if segue.destination is ResultsExpandedViewController {
+            let vc = segue.destination as? ResultsExpandedViewController
+            vc?.fatMass = Float(fatMass)
+            vc?.leanMass = Float(leanMass)
+            vc?.bmi = Float(bmi)
+            vc?.bfp = Float(bfp)
+            vc?.age = age
+            vc?.sex = sex
+            vc?.weight = weight
+        }
+        print("COMPLETED ResultsVC prepare")
     }
     
     //

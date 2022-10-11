@@ -2,7 +2,7 @@
 //  MapView.swift
 //  Body Fat Calculator
 //
-//  Created by Michael Green on 2022-07-21.
+//  Created by Michael Green on 2022-07-15.
 //
 
 import SwiftUI
@@ -47,8 +47,14 @@ class BusinessService: ObservableObject{
     @Published var businessList: [Business] = []
     @Published var gymsNearBy: [AnnotatedItem] = []
     
+    // Key has been removed to prevent malicious actors from spamming API requests
+    let apiKey = "Please use your own Google Places API Key"
+    
+    // This is measured in meters 15000 meter is 15km for example.
+    let radius = 15000
+    
     func getData2(lat: Double, lon: Double) async throws {
-        if let url = URL(string: "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=\(lat),\(lon)&radius=15000&types=gym&key=AIzaSyDO6e22zBmz5ncD4uOTpS6JmstqW2XmSRE") {
+        if let url = URL(string: "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=\(lat),\(lon)&radius=\(radius)&types=gym&key=\(apiKey)") {
             let (data, _) = try await URLSession.shared.data(from: url)
             Task{@MainActor in
                 let responseData = try JSONDecoder().decode(ServerResponse.self, from: data)

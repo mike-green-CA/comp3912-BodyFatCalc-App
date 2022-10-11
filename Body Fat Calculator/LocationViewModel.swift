@@ -2,7 +2,7 @@
 //  LocationViewModel.swift
 //  Body Fat Calculator
 //
-//  Created by Michael Green on 2022-07-21.
+//  Created by Michael Green on 2022-07-15.
 //
 
 
@@ -52,8 +52,4 @@ class LocationViewModel: NSObject, ObservableObject, CLLocationManagerDelegate {
                 }
         }
     
-    
-    // Test url
-    // https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=49.252400,-122.735960&radius=20000&types=gym&key=AIzaSyDO6e22zBmz5ncD4uOTpS6JmstqW2XmSRE
-    //
 }
